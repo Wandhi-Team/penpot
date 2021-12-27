@@ -115,7 +115,7 @@
 (def metrics
   {:name ::metrics
    :wrap (fn [handler]
-           (mtx/wrap-counter handler {:id "http__requests_counter"
+           (mtx/wrap-counter handler {:id "http_requests_total"
                                       :help "Absolute http requests counter."}))})
 (def cookies
   {:name ::cookies

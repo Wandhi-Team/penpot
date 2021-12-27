@@ -92,22 +92,24 @@
    :app.http/server
    {:port    (cf/get :http-server-port)
     :router  (ig/ref :app.http/router)
-    :metrics (ig/ref :app.metrics/metrics)
-    :ws      {"/ws/notifications" (ig/ref :app.notifications/handler)}}
+    :metrics (ig/ref :app.metrics/metrics)}
 
    :app.http/router
-   {:rpc         (ig/ref :app.rpc/rpc)
-    :session     (ig/ref :app.http.session/session)
-    :tokens      (ig/ref :app.tokens/tokens)
-    :public-uri  (cf/get :public-uri)
-    :metrics     (ig/ref :app.metrics/metrics)
-    :oauth       (ig/ref :app.http.oauth/handler)
-    :assets      (ig/ref :app.http.assets/handlers)
-    :storage     (ig/ref :app.storage/storage)
-    :sns-webhook (ig/ref :app.http.awsns/handler)
-    :feedback    (ig/ref :app.http.feedback/handler)
+   {:assets               (ig/ref :app.http.assets/handlers)
+    :feedback             (ig/ref :app.http.feedback/handler)
+    :session              (ig/ref :app.http.session/session)
+    :sns-webhook          (ig/ref :app.http.awsns/handler)
+    :oauth                (ig/ref :app.http.oauth/handler)
+    :metrics              (ig/ref :app.metrics/metrics)
+    :msgbus               (ig/ref :app.msgbus/msgbus)
+    :pool                 (ig/ref :app.db/pool)
+    :public-uri           (cf/get :public-uri)
+    :storage              (ig/ref :app.storage/storage)
+    :tokens               (ig/ref :app.tokens/tokens)
     :audit-http-handler   (ig/ref :app.loggers.audit/http-handler)
-    :error-report-handler (ig/ref :app.loggers.database/handler)}
+    :error-report-handler (ig/ref :app.loggers.database/handler)
+    :executor             (ig/ref :app.worker/executor)
+    :rpc                  (ig/ref :app.rpc/rpc)}
 
    :app.http.assets/handlers
    {:metrics           (ig/ref :app.metrics/metrics)
@@ -120,12 +122,12 @@
    {:pool (ig/ref :app.db/pool)}
 
    :app.http.oauth/handler
-   {:rpc           (ig/ref :app.rpc/rpc)
-    :session       (ig/ref :app.http.session/session)
-    :pool          (ig/ref :app.db/pool)
-    :tokens        (ig/ref :app.tokens/tokens)
-    :audit         (ig/ref :app.loggers.audit/collector)
-    :public-uri    (cf/get :public-uri)}
+   {:rpc        (ig/ref :app.rpc/rpc)
+    :session    (ig/ref :app.http.session/session)
+    :pool       (ig/ref :app.db/pool)
+    :tokens     (ig/ref :app.tokens/tokens)
+    :audit      (ig/ref :app.loggers.audit/collector)
+    :public-uri (cf/get :public-uri)}
 
    :app.rpc/rpc
    {:pool       (ig/ref :app.db/pool)
@@ -137,12 +139,12 @@
     :public-uri (cf/get :public-uri)
     :audit      (ig/ref :app.loggers.audit/collector)}
 
-   :app.notifications/handler
-   {:msgbus   (ig/ref :app.msgbus/msgbus)
-    :pool     (ig/ref :app.db/pool)
-    :session  (ig/ref :app.http.session/session)
-    :metrics  (ig/ref :app.metrics/metrics)
-    :executor (ig/ref :app.worker/executor)}
+   ;; :app.notifications/handler
+   ;; {:msgbus   (ig/ref :app.msgbus/msgbus)
+   ;;  :pool     (ig/ref :app.db/pool)
+   ;;  :session  (ig/ref :app.http.session/session)
+   ;;  :metrics  (ig/ref :app.metrics/metrics)
+   ;;  :executor (ig/ref :app.worker/executor)}
 
    :app.worker/executor
    {:min-threads 0
